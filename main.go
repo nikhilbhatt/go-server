@@ -7,12 +7,11 @@ import (
 )
 
 type Response struct {
-	Message string      `json:"message"`
-	Body    interface{} `json:"body"`
-	Params  string      `json:"params"`
+	Body   interface{} `json:"body"`
+	Params string      `json:"params"`
 }
 
-func handleApi(w http.ResponseWriter, r *http.Request) {
+func handleGetApi(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.RawQuery
 
 	var body interface{}
@@ -24,9 +23,8 @@ func handleApi(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := Response{
-		Message: "Request received successfully",
-		Body:    body,
-		Params:  params,
+		Body:   body,
+		Params: params,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -40,7 +38,7 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", handleRoot)
-	mux.HandleFunc("GET /api", handleApi)
+	mux.HandleFunc("GET /api", handleGetApi)
 
 	fmt.Println("Listening on Port 3000")
 	http.ListenAndServe(":3000", mux)
